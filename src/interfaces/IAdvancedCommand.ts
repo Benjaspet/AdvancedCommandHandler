@@ -16,20 +16,11 @@
  * credit is given to the original author(s).
  */
 
+import {AdvancedCommandData} from "../structs/AdvancedCommandData";
 import {CommandInteraction} from "discord.js";
-import {AdvancedCommandData} from "./AdvancedCommandData";
 
-export default abstract class AdvancedCommand {
-
-    protected readonly name: string;
-    protected readonly data: AdvancedCommandData;
-
-    protected constructor(name: string, data: AdvancedCommandData) {
-        this.name = name;
-        this.data = data;
-    }
-
-    public abstract execute(interaction: CommandInteraction): void;
-    public abstract getCommandData(): AdvancedCommandData;
-    public abstract getName(): string;
+export interface IAdvancedCommand {
+    getName(): string;
+    getCommandData(): AdvancedCommandData;
+    execute(event: CommandInteraction): void;
 }

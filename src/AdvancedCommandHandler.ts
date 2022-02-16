@@ -16,10 +16,58 @@
  * credit is given to the original author(s).
  */
 
-import {Collection} from "discord.js";
+import {Client, Collection} from "discord.js";
+import AdvancedCommand from "./structs/AdvancedCommand";
+import CommandInteractionEvent from "./events/CommandInteractionEvent";
+import {REST} from "@discordjs/rest";
+import {Routes} from "discord-api-types";
 import {AdvancedCommandData} from "./structs/AdvancedCommandData";
 
 export class AdvancedCommandHandler {
 
-    private commands: Collection<string, AdvancedCommandData>
+    private commands: Collection<string, AdvancedCommand> = new Collection<string, AdvancedCommand>();
+    private client: Client;
+
+    constructor(client: Client) {
+        this.client = client;
+        this.client.once("ready", () => {
+            new CommandInteractionEvent(client, "interactionCreate", false);
+        });
+    }
+
+    public register(commands: AdvancedCommand[]): void {
+        for (const command of commands) {
+            this.commands.set(command.getName(), command);
+        }
+    }
+
+    public getCommand(commandName: string) {
+        return this.commands.get(commandName);
+    }
+
+    public async deployAll(commands: AdvancedCommand[], guild?: string): Promise<void> {
+        if (!guild) {
+            const rest = new REST({version: "9"}).setToken(this.client.token);
+            await rest.put(Routes.applicationCommands(this.client.user.id), {
+                body: this.getAllCommandData(commands)
+            });
+        } else {
+            const rest = new REST({version: "9"}).setToken(this.client.token);
+            await rest.put(Routes.applicationGuildCommands(this.client.user.id, guild), {
+                body: this.getAllCommandData(commands)
+            });
+        }
+    }
+
+    public deleteAll(global: boolean): void {
+
+    }
+
+    public getAllCommandData(commands: AdvancedCommand[]): AdvancedCommandData[] {
+        let commandData: AdvancedCommandData[] = [];
+        for (const data of commands) {
+            commandData.push(data.getCommandData())
+        }
+        return commandData;
+    }
 }
