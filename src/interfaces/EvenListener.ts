@@ -1,6 +1,6 @@
 import {Client, ClientEvents} from "discord.js";
 
-export interface IEvent {
+export interface EvenListener {
     name: keyof ClientEvents;
     once: boolean;
     readonly client: Client;

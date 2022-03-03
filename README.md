@@ -34,8 +34,8 @@ export default {client, handler};
 import AdvancedCommand from "./AdvancedCommand";
 import {IAdvancedCommand} from "./IAdvancedCommand";
 import {Client, CommandInteraction} from "discord.js";
-import DefaultCommandBuilder from "./DefaultCommandBuilder";
-import AdvancedCommandOption from "./AdvancedCommandOption";
+import CommandBuilder from "./CommandBuilder";
+import OptionBuilder from "./OptionBuilder";
 
 export default class TestCommand extends AdvancedCommand implements IAdvancedCommand {
 
@@ -43,11 +43,11 @@ export default class TestCommand extends AdvancedCommand implements IAdvancedCom
 
     constructor(client: Client) {
         super("test",
-            new DefaultCommandBuilder()
+            new CommandBuilder()
                 .setName("test")
                 .setDescription("A test command.")
                 .addOption(
-                    new AdvancedCommandOption()
+                    new OptionBuilder()
                         .setName("option1")
                         .setDescription("An option for the test command.")
                         .setType("STRING")

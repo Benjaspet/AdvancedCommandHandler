@@ -16,11 +16,8 @@
  * credit is given to the original author(s).
  */
 
-import {AdvancedCommandData} from "../structs/AdvancedCommandData";
 import {CommandInteraction} from "discord.js";
 
-export interface IAdvancedCommand {
-    getName(): string;
-    getCommandData(): AdvancedCommandData;
+export interface Runnable {
     execute(event: CommandInteraction): void;
 }

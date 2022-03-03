@@ -16,12 +16,12 @@
  * credit is given to the original author(s).
  */
 
-import {IEvent} from "../interfaces/IEvent";
+import {EvenListener} from "../interfaces/EvenListener";
 import {Client, ClientEvents, Interaction} from "discord.js";
 import {AdvancedCommandHandler} from "../AdvancedCommandHandler";
 import AdvancedCommand from "../structs/AdvancedCommand";
 
-export default class CommandInteractionEvent implements IEvent {
+export default class CommandInteractionEvent implements EvenListener {
 
     public name: keyof ClientEvents;
     public once: boolean;

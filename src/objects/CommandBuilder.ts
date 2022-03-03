@@ -16,11 +16,11 @@
  * credit is given to the original author(s).
  */
 
-import {AdvancedCommandData} from "./structs/AdvancedCommandData";
-import {InvalidCommandDataException} from "./exceptions/InvalidCommandDataException";
-import {AdvancedCommandOptionData} from "./structs/AdvancedCommandOptionData";
+import {AdvancedCommandData} from "../structs/AdvancedCommandData";
+import {InvalidCommandDataException} from "../exceptions/InvalidCommandDataException";
+import {AdvancedCommandOptionData} from "../structs/AdvancedCommandOptionData";
 
-export default class DefaultCommandBuilder {
+export default class CommandBuilder {
 
     private name: string;
     private description: string;
@@ -35,7 +35,7 @@ export default class DefaultCommandBuilder {
      * @return DefaultCommand
      */
 
-    public setName(name: string): DefaultCommandBuilder {
+    public setName(name: string): CommandBuilder {
         this.name = name;
         return this;
     }
@@ -46,7 +46,7 @@ export default class DefaultCommandBuilder {
      * @return DefaultCommand
      */
 
-    public setDescription(description: string): DefaultCommandBuilder {
+    public setDescription(description: string): CommandBuilder {
         this.description = description;
         return this;
     }
@@ -57,7 +57,7 @@ export default class DefaultCommandBuilder {
      * @return DefaultCommand
      */
 
-    public addOption(option: AdvancedCommandOptionData): DefaultCommandBuilder {
+    public addOption(option: AdvancedCommandOptionData): CommandBuilder {
         this.options.push(option);
         return this;
     }
@@ -68,7 +68,7 @@ export default class DefaultCommandBuilder {
      * @return DefaultCommand
      */
 
-    public addOptions(options: AdvancedCommandOptionData[]): DefaultCommandBuilder {
+    public addOptions(options: AdvancedCommandOptionData[]): CommandBuilder {
         for (const option of options) {
             this.options.push(option);
         }
@@ -81,7 +81,7 @@ export default class DefaultCommandBuilder {
      * @throws InvalidCommandDataException
      */
 
-    public build(): DefaultCommandBuilder {
+    public build(): CommandBuilder {
         if (!this.name || !this.description) {
             throw new InvalidCommandDataException();
         }

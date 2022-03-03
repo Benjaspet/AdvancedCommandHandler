@@ -1,9 +1,27 @@
+/*
+ * Copyright © 2022 Ben Petrillo. All rights reserved.
+ *
+ * Project licensed under the MIT License: https://www.mit.edu/~amini/LICENSE.md
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ * OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * All portions of this software are available for public use, provided that
+ * credit is given to the original author(s).
+ */
+
 import {AdvancedCommandChoice} from "../structs/AdvancedCommandChoice";
 import {AdvancedCommandOptionData} from "../structs/AdvancedCommandOptionData";
 import {InvalidCommandDataException} from "../exceptions/InvalidCommandDataException";
 import {ApplicationCommandOptionType} from "discord.js";
 
-export default class AdvancedCommandOption {
+export default class OptionBuilder {
 
     private name: string;
     private description: string;
@@ -17,10 +35,10 @@ export default class AdvancedCommandOption {
     /**
      * Set the name of this command option.
      * @param name The name of the option.
-     * @return AdvancedCommandOption
+     * @return OptionBuilder
      */
 
-    public setName(name: string): AdvancedCommandOption {
+    public setName(name: string): OptionBuilder {
         this.name = name;
         return this;
     }
@@ -28,10 +46,10 @@ export default class AdvancedCommandOption {
     /**
      * Set the description of this command option.
      * @param description The description of the option.
-     * @return AdvancedCommandOption
+     * @return OptionBuilder
      */
 
-    public setDescription(description: string): AdvancedCommandOption {
+    public setDescription(description: string): OptionBuilder {
         this.description = description;
         return this;
     }
@@ -39,10 +57,10 @@ export default class AdvancedCommandOption {
     /**
      * Set the type of this option.
      * @param type The type of this option.
-     * @return AdvancedCommandOption
+     * @return OptionBuilder
      */
 
-    public setType(type: ApplicationCommandOptionType): AdvancedCommandOption {
+    public setType(type: ApplicationCommandOptionType): OptionBuilder {
         this.type = type;
         return this;
     }
@@ -50,10 +68,10 @@ export default class AdvancedCommandOption {
     /**
      * Determine if this option is required or optional.
      * @param required Whether or not this option is required.
-     * @return AdvancedCommandOption
+     * @return OptionBuilder
      */
 
-    public setRequired(required: boolean): AdvancedCommandOption {
+    public setRequired(required: boolean): OptionBuilder {
         this.required = required;
         return this;
     }
@@ -61,7 +79,7 @@ export default class AdvancedCommandOption {
     /**
      * Determine if this option is autocompletable or not.
      * @param autocomplete Whether or not this option is autocompletable.
-     * @return AdvancedCommandOption
+     * @return OptionBuilder
      */
 
     public setAutocompletable(autocomplete: boolean) {
@@ -72,12 +90,12 @@ export default class AdvancedCommandOption {
     /**
      * Add an array of choices to this command option.
      * @param choices The array of AdvancedCommandChoices to add.
-     * @return AdvancedCommandOption
+     * @return OptionBuilder
      */
 
-    public addChoices(choices: AdvancedCommandChoice[]): AdvancedCommandOption {
+    public addChoices(choices: AdvancedCommandChoice[]): OptionBuilder {
         for (const choice of choices) {
-            this.choices.push(choice)
+            this.choices.push(choice);
         }
         return this;
     }
