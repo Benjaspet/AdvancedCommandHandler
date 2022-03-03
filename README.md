@@ -10,6 +10,7 @@ An advanced command handler for Discord.js.
 ```ts
 import {Intents} from "discord.js";
 import {AdvancedCommandHandler} from "./AdvancedCommandHandler";
+import TestCommand from "./TestCommand";
 
 const client: Client = new Client({
     intents: [Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
@@ -20,7 +21,7 @@ const client: Client = new Client({
 });
 
 const handler: AdvancedCommandHandler = new AdvancedCommandHandler(client)
-    .registerCommands([])
+    .registerCommands([new TestCommand(client)])
 
 client.login("TOKEN-HERE").then(response => console.log("Logged in!"));
 

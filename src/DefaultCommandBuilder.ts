@@ -18,13 +18,13 @@
 
 import {AdvancedCommandData} from "./structs/AdvancedCommandData";
 import {InvalidCommandDataException} from "./exceptions/InvalidCommandDataException";
-import {AdvancedCommandOption} from "./structs/AdvancedCommandOption";
+import {AdvancedCommandOptionData} from "./structs/AdvancedCommandOptionData";
 
 export default class DefaultCommandBuilder {
 
     private name: string;
     private description: string;
-    private options: AdvancedCommandOption[];
+    private options: AdvancedCommandOptionData[];
     private data: AdvancedCommandData;
 
     constructor() {}
@@ -57,7 +57,7 @@ export default class DefaultCommandBuilder {
      * @return DefaultCommand
      */
 
-    public addOption(option: AdvancedCommandOption): DefaultCommandBuilder {
+    public addOption(option: AdvancedCommandOptionData): DefaultCommandBuilder {
         this.options.push(option);
         return this;
     }
@@ -68,8 +68,10 @@ export default class DefaultCommandBuilder {
      * @return DefaultCommand
      */
 
-    public addOptions(options: AdvancedCommandOption[]): DefaultCommandBuilder {
-        this.options = options;
+    public addOptions(options: AdvancedCommandOptionData[]): DefaultCommandBuilder {
+        for (const option of options) {
+            this.options.push(option);
+        }
         return this;
     }
 

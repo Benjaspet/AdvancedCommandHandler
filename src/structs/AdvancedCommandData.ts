@@ -16,10 +16,10 @@
  * credit is given to the original author(s).
  */
 
-import {AdvancedCommandOption} from "./AdvancedCommandOption";
+import {AdvancedCommandOptionData} from "./AdvancedCommandOptionData";
 
 export interface AdvancedCommandData {
     name: string,
     description: string,
-    options?: AdvancedCommandOption[]
+    options?: AdvancedCommandOptionData[]
 }

@@ -19,7 +19,7 @@
 import {ApplicationCommandOptionType} from "discord.js";
 import {AdvancedCommandChoice} from "./AdvancedCommandChoice";
 
-export interface AdvancedCommandOption {
+export interface AdvancedCommandOptionData {
     name: string,
     description: string,
     type: ApplicationCommandOptionType,
