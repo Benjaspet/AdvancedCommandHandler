@@ -35,25 +35,27 @@ import AdvancedCommand from "./AdvancedCommand";
 import {IAdvancedCommand} from "./IAdvancedCommand";
 import {Client, CommandInteraction} from "discord.js";
 import DefaultCommandBuilder from "./DefaultCommandBuilder";
+import AdvancedCommandOption from "./AdvancedCommandOption";
 
 export default class TestCommand extends AdvancedCommand implements IAdvancedCommand {
 
     private readonly client: Client;
 
     constructor(client: Client) {
-        super("test", 
+        super("test",
             new DefaultCommandBuilder()
                 .setName("test")
                 .setDescription("A test command.")
-                .addOption({
-                    name: "option1",
-                    description: "An option for the test command.",
-                    type: "STRING",
-                    required: false,
-                    autocomplete: false
-                })
-                .build().getData()
-        );
+                .addOption(
+                    new AdvancedCommandOption()
+                        .setName("option1")
+                        .setDescription("An option for the test command.")
+                        .setType("STRING")
+                        .setRequired(true)
+                        .setAutocompletable(false)
+                        .addChoices([])
+                        .build()
+                ).build().getData());
         this.client = client;
     }
 
