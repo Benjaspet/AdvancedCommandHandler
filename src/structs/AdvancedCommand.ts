@@ -30,6 +30,6 @@ export default abstract class AdvancedCommand {
     }
 
     public abstract execute(interaction: CommandInteraction): void;
-    public abstract getCommandData(): AdvancedCommandData;
-    public abstract getName(): string;
+    public getCommandData(): AdvancedCommandData { return this.data };
+    public getName(): string { return this.name; }
 }

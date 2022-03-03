@@ -21,19 +21,24 @@ import {REST} from "@discordjs/rest";
 import {Routes} from "discord-api-types";
 import {AdvancedCommandData} from "./structs/AdvancedCommandData";
 import {CommandInfo} from "./structs/CommandInfo";
+import {RestPutException} from "./exceptions/DeployException";
 import AdvancedCommand from "./structs/AdvancedCommand";
 import CommandInteractionEvent from "./events/CommandInteractionEvent";
 
 export class AdvancedCommandHandler {
 
     private commands: Collection<string, AdvancedCommand> = new Collection<string, AdvancedCommand>();
-    private client: Client;
+    private readonly client: Client;
 
     constructor(client: Client) {
         this.client = client;
         this.client.once("ready", () => {
             new CommandInteractionEvent(client, "interactionCreate", false);
         });
+    }
+
+    public getClient(): Client {
+        return this.client;
     }
 
     public registerCommands(commands: AdvancedCommand[]): AdvancedCommandHandler {
@@ -56,34 +61,44 @@ export class AdvancedCommandHandler {
     }
 
     public async deployAll(commands: AdvancedCommand[], guilds?: string): Promise<void> {
-        if (!guilds.length) {
-            const rest: REST = new REST({version: "9"}).setToken(this.client.token);
-            await rest.put(Routes.applicationCommands(this.client.user.id), {
-                body: this.getAllCommandData(commands)
-            });
-        } else {
-            const rest: REST = new REST({version: "9"}).setToken(this.client.token);
-            for (const guild of guilds) {
-                await rest.put(Routes.applicationGuildCommands(this.client.user.id, guild), {
+        try {
+            if (!guilds.length) {
+                const rest: REST = new REST({version: "9"}).setToken(this.client.token);
+                await rest.put(Routes.applicationCommands(this.client.user.id), {
                     body: this.getAllCommandData(commands)
                 });
+            } else {
+                const rest: REST = new REST({version: "9"}).setToken(this.client.token);
+                for (const guild of guilds) {
+                    await rest.put(Routes.applicationGuildCommands(this.client.user.id, guild), {
+                        body: this.getAllCommandData(commands)
+                    });
+                }
             }
+        } catch (error: any) {
+            throw new RestPutException();
         }
     }
 
-    // public async deleteAll(guilds: string[]): Promise<void> {
-    //     if (!guilds.length) {
-    //         const rest = new REST({version: "9"}).setToken(this.client.token);
-    //         await rest.put(Routes.applicationCommands(this.client.user.id), {
-    //             body: this.getAllCommandData(commands)
-    //         });
-    //     } else {
-    //         const rest = new REST({version: "9"}).setToken(this.client.token);
-    //         await rest.put(Routes.applicationGuildCommands(this.client.user.id, guild), {
-    //             body: this.getAllCommandData(commands)
-    //         });
-    //     }
-    // }
+    public async deleteAll(guilds: string[]): Promise<void> {
+        try {
+            if (!guilds.length) {
+                const rest = new REST({version: "9"}).setToken(this.client.token);
+                await rest.put(Routes.applicationCommands(this.client.user.id), {
+                    body: []
+                });
+            } else {
+                const rest = new REST({version: "9"}).setToken(this.client.token);
+                for (const guild of guilds) {
+                    await rest.put(Routes.applicationGuildCommands(this.client.user.id, guild), {
+                        body: []
+                    });
+                }
+            }
+        } catch (error: any) {
+            throw new RestPutException();
+        }
+    }
 
     public getAllCommandData(commands: AdvancedCommand[]): AdvancedCommandData[] {
         let commandData: AdvancedCommandData[] = [];
