@@ -27,6 +27,8 @@ import CommandInteractionEvent from "./events/CommandInteractionEvent";
 
 export class AdvancedCommandHandler {
 
+    public version: string = process.version;
+
     private commands: Collection<string, AdvancedCommand> = new Collection<string, AdvancedCommand>();
     private readonly client: Client;
 
@@ -48,7 +50,7 @@ export class AdvancedCommandHandler {
         return this;
     }
 
-    public getCommand(commandName: string) {
+    public getCommand(commandName: string): AdvancedCommand {
         return this.commands.get(commandName);
     }
 
@@ -60,7 +62,7 @@ export class AdvancedCommandHandler {
         return commandData;
     }
 
-    public async deployAll(commands: AdvancedCommand[], guilds?: string): Promise<void> {
+    public async deployAll(commands: AdvancedCommand[], guilds?: string[]): Promise<void> {
         try {
             if (!guilds.length) {
                 const rest: REST = new REST({version: "9"}).setToken(this.client.token);

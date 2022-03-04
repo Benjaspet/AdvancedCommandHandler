@@ -65,3 +65,59 @@ export default class TestCommand extends AdvancedCommand implements IAdvancedCom
 }
 
 ```
+
+## Documentation 
+
+### Classes
+
+`AdvancedCommandHandler`
+- Create a new instance of the command handler.
+
+#### Constructor
+
+```ts
+new AdvancedCommandHandler(client);
+```
+
+Parameter | Type | Description
+:---: | :---: | :---: |
+`client` | `Discord.Client` | The Discord client to use. |
+
+### Methods
+
+### `getCommand(): AdvancedCommand`
+- Get a command by name.
+
+Parameter | Type | Description
+:---: | :---: | :---: |
+`commandName` | `string` | The `AdvancedCommand` to fetch, by name. |
+
+#### Returns: `AdvancedCommand`
+
+### `deployAll(): Promise<void>`
+- Deploy all application commands.
+
+Parameter | Type | Description
+:---: | :---: | :---: |
+| `commands` | `AdvancedCommand[]` | The `AdvancedCommand` instances to deploy. |
+| `guilds?` | `string[]` | The guilds to deploy the commands to. |
+
+#### Returns: `Promise<void>`
+
+### `deleteAll(): Promise<void>`
+- Delete all application commands.
+
+Parameter | Type | Description
+:---: | :---: | :---: |
+| `guilds?` | `string[]` | The guilds to delete the commands from. |
+
+#### Returns: `Promise<void>`
+
+### `registerCommands(): AdvancedCommandHandler`
+- Register a list of commands to the handler.
+
+Parameter | Type | Description
+:---: | :---: | :---: |
+| `commands` | `AdvancedCommand[]` | The command classes to register. |
+
+#### Returns: `AdvancedCommandHandler`
