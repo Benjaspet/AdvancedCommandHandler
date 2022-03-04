@@ -21,7 +21,6 @@ import {InvalidCommandDataException} from "../exceptions/InvalidCommandDataExcep
 
 export default class ChoiceBuilder {
 
-    private choice: AdvancedCommandChoice;
     private choices: AdvancedCommandChoice[];
 
     constructor() {}

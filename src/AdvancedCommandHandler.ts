@@ -19,9 +19,9 @@
 import {Client, Collection} from "discord.js";
 import {REST} from "@discordjs/rest";
 import {Routes} from "discord-api-types";
+import {RestPutException} from "./exceptions/DeployException";
 import {AdvancedCommandData} from "./structs/AdvancedCommandData";
 import {CommandInfo} from "./structs/CommandInfo";
-import {RestPutException} from "./exceptions/DeployException";
 import AdvancedCommand from "./structs/AdvancedCommand";
 import CommandInteractionEvent from "./events/CommandInteractionEvent";
 
@@ -103,7 +103,7 @@ export class AdvancedCommandHandler {
     public getAllCommandData(commands: AdvancedCommand[]): AdvancedCommandData[] {
         let commandData: AdvancedCommandData[] = [];
         for (const data of commands) {
-            commandData.push(data.getCommandData())
+            commandData.push(data.getCommandData());
         }
         return commandData;
     }
