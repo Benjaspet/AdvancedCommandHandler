@@ -1,3 +1,4 @@
+
 import {AdvancedCommandHandler} from "./AdvancedCommandHandler";
 import {Client, CommandInteraction, Options} from "discord.js";
 import DefaultCommand from "./DefaultCommandBuilder";
