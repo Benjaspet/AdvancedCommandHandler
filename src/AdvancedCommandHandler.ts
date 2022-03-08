@@ -28,6 +28,7 @@ import CommandInteractionEvent from "./events/CommandInteractionEvent";
 export class AdvancedCommandHandler {
 
     private commands: Collection<string, AdvancedCommand> = new Collection<string, AdvancedCommand>();
+    private commandClasses: AdvancedCommand[] = [];
     private readonly client: Client;
 
     constructor(client: Client) {
@@ -44,6 +45,7 @@ export class AdvancedCommandHandler {
     public registerCommands(commands: AdvancedCommand[]): AdvancedCommandHandler {
         for (const command of commands) {
             this.commands.set(command.getName(), command);
+            this.commandClasses.push(command);
         }
         return this;
     }
@@ -60,18 +62,24 @@ export class AdvancedCommandHandler {
         return commandData;
     }
 
-    public async deployAll(commands: AdvancedCommand[], guilds?: string): Promise<void> {
+    /**
+     * Delete all application commands.
+     * @param guilds? The array of guilds to delete the commands from. If null, deletes global commands.
+     * @return Promise<void>
+     */
+
+    public async deployAll(guilds?: string): Promise<void> {
         try {
             if (!guilds.length) {
                 const rest: REST = new REST({version: "9"}).setToken(this.client.token);
                 await rest.put(Routes.applicationCommands(this.client.user.id), {
-                    body: this.getAllCommandData(commands)
+                    body: this.getAllCommandData(this.commandClasses)
                 });
             } else {
                 const rest: REST = new REST({version: "9"}).setToken(this.client.token);
                 for (const guild of guilds) {
                     await rest.put(Routes.applicationGuildCommands(this.client.user.id, guild), {
-                        body: this.getAllCommandData(commands)
+                        body: this.getAllCommandData(this.commandClasses)
                     });
                 }
             }
@@ -80,7 +88,13 @@ export class AdvancedCommandHandler {
         }
     }
 
-    public async deleteAll(guilds: string[]): Promise<void> {
+    /**
+     * Delete all application commands.
+     * @param guilds? The array of guilds to delete the commands from. If null, deletes global commands.
+     * @return Promise<void>
+     */
+
+    public async deleteAll(guilds?: string[]): Promise<void> {
         try {
             if (!guilds.length) {
                 const rest = new REST({version: "9"}).setToken(this.client.token);
