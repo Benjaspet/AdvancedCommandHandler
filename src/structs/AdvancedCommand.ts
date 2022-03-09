@@ -29,7 +29,7 @@ export default abstract class AdvancedCommand {
         this.data = data;
     }
 
-    protected abstract execute(interaction: CommandInteraction): void;
-    protected getCommandData(): AdvancedCommandData { return this.data };
-    protected getName(): string { return this.name; }
+    public abstract execute(interaction: CommandInteraction): void;
+    public getCommandData(): AdvancedCommandData { return this.data };
+    public getName(): string { return this.name; }
 }
