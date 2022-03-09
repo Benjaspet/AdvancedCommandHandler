@@ -17,23 +17,30 @@
  */
 
 import {Client, Collection} from "discord.js";
-import {AdvancedCommandData} from "./structs/AdvancedCommandData";
-import {CommandInfo} from "./structs/CommandInfo";
 import AdvancedCommand from "./structs/AdvancedCommand";
 import CommandInteractionEvent from "./events/CommandInteractionEvent";
+import Manager from "./managers/Manager";
 
 export class AdvancedCommandHandler {
 
     private commandClasses: AdvancedCommand[] = [];
     private commands: Collection<string, AdvancedCommand> = new Collection<string, AdvancedCommand>();
-    private readonly client: Client;
+    private readonly declare manager: Manager;
+    private readonly declare client: Client;
 
     constructor(client: Client) {
         this.client = client;
+        this.manager = new Manager(this);
         this.client.once("ready", () => {
             new CommandInteractionEvent(client, "interactionCreate", false);
         });
     }
+
+    /**
+     * Register an array of commands to the handler.
+     * @param commands The commands to register.
+     * @return AdvancedCommandHandler
+     */
 
     public registerCommands(commands: AdvancedCommand[]): AdvancedCommandHandler {
         for (const command of commands) {
@@ -43,26 +50,6 @@ export class AdvancedCommandHandler {
         return this;
     }
 
-    public getCommand(commandName: string) {
-        return this.commands.get(commandName);
-    }
-
-    public getAllCommands(): CommandInfo[] {
-        let commandData: CommandInfo[] = [];
-        this.commands.forEach(command => {
-            commandData.push({name: command.getName(), data: command.getCommandData()})
-        });
-        return commandData;
-    }
-
-    public getAllCommandData(commands: AdvancedCommand[]): AdvancedCommandData[] {
-        let commandData: AdvancedCommandData[] = [];
-        for (const data of commands) {
-            commandData.push(data.getCommandData())
-        }
-        return commandData;
-    }
-
     /**
      * Get the array of AdvancedCommand instances for this handler.
      * @return AdvancedCommand[]
@@ -70,6 +57,24 @@ export class AdvancedCommandHandler {
 
     public getCommandClasses(): AdvancedCommand[] {
         return this.commandClasses;
+    }
+
+    /**
+     * Get the command map for this instance.
+     * @return Collection<string, AdvancedCommand>
+     */
+
+    public getCommandMap(): Collection<string, AdvancedCommand> {
+        return this.commands;
+    }
+
+    /**
+     * Get the command handler manager.
+     * @return Manager
+     */
+    
+    public getManager(): Manager {
+        return this.manager;
     }
 
     /**
