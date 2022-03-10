@@ -23,9 +23,9 @@ import AdvancedCommand from "../structs/AdvancedCommand";
 
 export default class CommandInteractionEvent implements EvenListener {
 
-    public name: keyof ClientEvents;
-    public once: boolean;
-    public readonly client: Client;
+    public declare name: keyof ClientEvents;
+    public declare once: boolean;
+    public readonly declare client: Client;
 
     constructor(client: Client, name: keyof ClientEvents, once: boolean) {
         this.name = name;
@@ -36,7 +36,7 @@ export default class CommandInteractionEvent implements EvenListener {
     public async execute(interaction: Interaction): Promise<void> {
         if (interaction.isCommand()) {
             const name: string = interaction.commandName;
-            const command: AdvancedCommand = new AdvancedCommandHandler(this.client).getCommand(name);
+            const command: AdvancedCommand = new AdvancedCommandHandler(this.client).getManager().getCommand(name);
             if (command != null) {
                 command.execute(interaction);
             }
