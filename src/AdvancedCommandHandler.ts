@@ -17,6 +17,7 @@
  */
 
 import {Client, Collection} from "discord.js";
+import {AdvancedCommandOptions} from "./structs/AdvancedCommandOptions";
 import AdvancedCommand from "./structs/AdvancedCommand";
 import CommandInteractionEvent from "./events/CommandInteractionEvent";
 import Manager from "./managers/Manager";
@@ -25,15 +26,20 @@ export class AdvancedCommandHandler {
 
     private commandClasses: AdvancedCommand[] = [];
     private commands: Collection<string, AdvancedCommand> = new Collection<string, AdvancedCommand>();
+    private options: AdvancedCommandOptions;
     private readonly declare manager: Manager;
     private readonly declare client: Client;
 
-    constructor(client: Client) {
+    constructor(client: Client, options: AdvancedCommandOptions) {
         this.client = client;
         this.manager = new Manager(this);
         this.client.once("ready", () => {
-            new CommandInteractionEvent(client, "interactionCreate", false);
+            new CommandInteractionEvent(client, "interactionCreate", false, this);
         });
+        this.options = {
+            mongoUri: options.mongoUri ? options.mongoUri : null,
+            debugMode: options.debugMode ? options.debugMode : false
+        };
     }
 
     /**
@@ -61,5 +67,14 @@ export class AdvancedCommandHandler {
     
     public getManager(): Manager {
         return this.manager;
+    }
+
+    /**
+     * Get the options for the command handler.
+     * @return AdvancedCommandOptions
+     */
+
+    public getOptions(): AdvancedCommandOptions {
+        return this.options;
     }
 }

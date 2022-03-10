@@ -26,19 +26,25 @@ export default class CommandInteractionEvent implements EvenListener {
     public declare name: keyof ClientEvents;
     public declare once: boolean;
     public readonly declare client: Client;
+    private readonly declare handler: AdvancedCommandHandler;
 
-    constructor(client: Client, name: keyof ClientEvents, once: boolean) {
+    constructor(client: Client, name: keyof ClientEvents, once: boolean, handler: AdvancedCommandHandler) {
         this.name = name;
         this.once = once;
         this.client = client;
+        this.handler = handler;
     }
 
     public async execute(interaction: Interaction): Promise<void> {
         if (interaction.isCommand()) {
             const name: string = interaction.commandName;
-            const command: AdvancedCommand = new AdvancedCommandHandler(this.client).getManager().getCommand(name);
+            const command: AdvancedCommand = this.handler.getManager().getCommand(name);
             if (command != null) {
                 command.execute(interaction);
+                if (this.handler.getOptions().debugMode) {
+                    console.log(`${command.getName()} | Execution succeeded.`);
+                    console.log(`Command Data: ${command.getCommandData()}`)
+                }
             }
         }
     }
