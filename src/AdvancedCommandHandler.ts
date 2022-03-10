@@ -37,20 +37,6 @@ export class AdvancedCommandHandler {
     }
 
     /**
-     * Register an array of commands to the handler.
-     * @param commands The commands to register.
-     * @return AdvancedCommandHandler
-     */
-
-    public registerCommands(commands: AdvancedCommand[]): AdvancedCommandHandler {
-        for (const command of commands) {
-            this.commands.set(command.getName(), command);
-            this.commandClasses.push(command);
-        }
-        return this;
-    }
-
-    /**
      * Get the array of AdvancedCommand instances for this handler.
      * @return AdvancedCommand[]
      */
@@ -75,14 +61,5 @@ export class AdvancedCommandHandler {
     
     public getManager(): Manager {
         return this.manager;
-    }
-
-    /**
-     * Get the Discord client instance.
-     * @return Client
-     */
-
-    public getClient(): Client {
-        return this.client;
     }
 }

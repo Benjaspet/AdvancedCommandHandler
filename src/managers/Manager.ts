@@ -30,6 +30,20 @@ export default class Manager {
     }
 
     /**
+     * Register an array of commands to the handler.
+     * @param commands The commands to register.
+     * @return AdvancedCommandHandler
+     */
+
+    public registerCommands(commands: AdvancedCommand[]): Manager {
+        for (const command of commands) {
+            this.handler.getCommandMap().set(command.getName(), command);
+            this.handler.getCommandClasses().push(command);
+        }
+        return this;
+    }
+
+    /**
      * Get a command by name.
      * @param commandName The name of the command to get.
      * @return AdvancedCommand
