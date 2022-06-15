@@ -17,10 +17,10 @@
  */
 
 import {REST} from "@discordjs/rest";
-import {Routes} from "discord-api-types";
 import {RestPutException} from "../exceptions/DeployException";
 import {AdvancedCommandHandler} from "../AdvancedCommandHandler";
 import {Client} from "discord.js";
+import {Routes} from "discord-api-types/v10";
 
 export default class CommandManager {
 
@@ -43,13 +43,13 @@ export default class CommandManager {
             if (!guilds.length) {
                 const rest: REST = new REST({version: "9"}).setToken(this.client.token);
                 await rest.put(Routes.applicationCommands(this.client.user.id), {
-                    body: this.handler.getAllCommandData(this.handler.getCommandClasses())
+                    body: this.handler.getManager().getAllCommandData()
                 });
             } else {
                 const rest: REST = new REST({version: "9"}).setToken(this.client.token);
                 for (const guild of guilds) {
                     await rest.put(Routes.applicationGuildCommands(this.client.user.id, guild), {
-                        body: this.handler.getAllCommandData(this.handler.getCommandClasses())
+                        body: this.handler.getManager().getAllCommandData()
                     });
                 }
             }

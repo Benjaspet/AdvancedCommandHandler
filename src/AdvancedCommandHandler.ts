@@ -16,7 +16,7 @@
  * credit is given to the original author(s).
  */
 
-import {Client, Collection} from "discord.js";
+import {Client, Collection, CommandInteraction} from "discord.js";
 import {AdvancedCommandOptions} from "./structs/AdvancedCommandOptions";
 import AdvancedCommand from "./structs/AdvancedCommand";
 import CommandInteractionEvent from "./events/CommandInteractionEvent";
@@ -26,15 +26,17 @@ export class AdvancedCommandHandler {
 
     private commandClasses: AdvancedCommand[] = [];
     private commands: Collection<string, AdvancedCommand> = new Collection<string, AdvancedCommand>();
-    private options: AdvancedCommandOptions;
+    private readonly options: AdvancedCommandOptions;
     private readonly declare manager: Manager;
     private readonly declare client: Client;
 
     constructor(client: Client, options: AdvancedCommandOptions) {
         this.client = client;
         this.manager = new Manager(this);
-        this.client.once("ready", () => {
-            new CommandInteractionEvent(client, "interactionCreate", false, this);
+        this.client.on("interactionCreate", async interaction => {
+            if (interaction instanceof CommandInteraction) {
+                await new CommandInteractionEvent(client, "interactionCreate", false, this).execute(interaction);
+            }
         });
         this.options = {
             mongoUri: options.mongoUri ? options.mongoUri : null,

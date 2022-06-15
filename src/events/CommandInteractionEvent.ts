@@ -17,7 +17,7 @@
  */
 
 import {EvenListener} from "../interfaces/EvenListener";
-import {Client, ClientEvents, Interaction} from "discord.js";
+import {Client, ClientEvents, CommandInteraction, Interaction} from "discord.js";
 import {AdvancedCommandHandler} from "../AdvancedCommandHandler";
 import AdvancedCommand from "../structs/AdvancedCommand";
 
@@ -35,7 +35,7 @@ export default class CommandInteractionEvent implements EvenListener {
         this.handler = handler;
     }
 
-    public async execute(interaction: Interaction): Promise<void> {
+    public async execute(interaction: CommandInteraction): Promise<void> {
         if (interaction.isCommand()) {
             const name: string = interaction.commandName;
             const command: AdvancedCommand = this.handler.getManager().getCommand(name);
